@@ -1,0 +1,10 @@
+-- AlterTable
+ALTER TABLE `combinedquestions` MODIFY `combinedText` VARCHAR(191) NOT NULL,
+    MODIFY `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE `deletedquestionslog` MODIFY `text` VARCHAR(191) NOT NULL,
+    MODIFY `deletedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
+
+-- AlterTable
+ALTER TABLE `subject` MODIFY `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3);
