@@ -7,47 +7,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       Int      @id @default(autoincrement())
-  email    String   @unique
-  password String
+model combinedquestions {
+  id           Int      @id @default(autoincrement())
+  question1Id  Int
+  question2Id  Int
+  combinedText String
+  marks        Int
+  difficulty   String
+  subjectId    Int?
+  createdAt    DateTime @default(now())
 }
 
-model Question {
-  id         Int      @id @default(autoincrement())
-  text       String
-  subject    String
-  subjectCode String?
-  marks      Int
-  difficulty String
-  createdAt  DateTime @default(now())
-  tags       Json?
-  subjectId  Int?
-  subjectRef Subject? @relation(fields: [subjectId], references: [id])
-}
-
-model Subject {
-  id        Int      @id @default(autoincrement())
-  name      String
-  code      String   @unique
-  createdAt DateTime @default(now())
-  questions Question[]
-}
-
-model CombinedQuestions {
-  id            Int      @id @default(autoincrement())
-  question1Id   Int
-  question2Id   Int
-  combinedText  String
-  marks         Int
-  difficulty    String
-  subjectId     Int?
-  createdAt     DateTime @default(now())
-}
-
-model DeletedQuestionsLog {
+model deletedquestionslog {
   id         Int      @id @default(autoincrement())
   questionId Int
   text       String
   deletedAt  DateTime @default(now())
+}
+
+model question {
+  id          Int      @id @default(autoincrement())
+  text        String
+  subject     String
+  marks       Int
+  difficulty  String
+  createdAt   DateTime @default(now())
+  subjectCode String?
+  tags        Json?
+  subjectId   Int?
+  subject     subject? @relation(fields: [subjectId], references: [id], map: "Question_subjectId_fkey")
+
+  @@index([subjectId], map: "Question_subjectId_fkey")
+}
+
+model subject {
+  id        Int        @id @default(autoincrement())
+  name      String
+  code      String     @unique(map: "Subject_code_key")
+  createdAt DateTime   @default(now())
+  question  question[]
+}
+
+model user {
+  id       Int    @id @default(autoincrement())
+  email    String @unique(map: "User_email_key")
+  password String
 }
